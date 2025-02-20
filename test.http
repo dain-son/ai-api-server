@@ -1,0 +1,17 @@
+### AND 모델 학습
+POST http://127.0.0.1:8000/train/AND
+
+### OR 모델 학습
+POST http://127.0.0.1:8000/train/OR
+
+### NOT 모델 학습
+POST http://127.0.0.1:8000/train/NOT
+
+### AND 모델 예측
+GET http://127.0.0.1:8000/predict/AND/1/1
+
+### OR 모델 예측
+GET http://127.0.0.1:8000/predict/OR/0/1
+
+### NOT 모델 예측
+GET http://127.0.0.1:8000/predict/NOT/1
