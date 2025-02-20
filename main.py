@@ -20,7 +20,7 @@ def train(gate_type: str):
     if gate_type not in gate_models:
         return {"error": "지원하지 않는 gate_type입니다. AND, OR, NOT 중 선택해주세요."}
     gate_models[gate_type].train()
-    return {"result": f"{gate_type}" 게이트 학습 완료!"}
+    return {"result": f"{gate_type} 게이트 학습 완료!"}
 
 # endpoint 엔드포인트를 선언하며 GET으로 요청을 받고 경로는 /이다.
 @app.get("/")
@@ -49,4 +49,10 @@ def predict(gate_type: str, left: int, right: int):
 def predict_not(input_value: int):
     result = gate_models['NOT'].predict([input_value])
     return {"result": result}
+
+import pickle 
+
+# 모델 객체 저장
+with open("model.pkl", "wb") as file:
+    pickle.dump(gate_models, file)
 
