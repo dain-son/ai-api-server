@@ -4,17 +4,23 @@ from fastapi import FastAPI
 # model.py를 가져온다.
 import model
 
-model.GateModel.train()
-
 # 그 안에 있는 AndModel 클래스의 인스턴스를 생성한다.
 gate_models = {
     'AND': model.GateModel('AND'),
     'OR': model.GateModel('OR'),
     'NOT': model.GateModel('NOT')
 }
-
 # API 서버를 생성한다.
 app = FastAPI()
+
+# 모델의 학습을 요청한다. 생성 기능은 POST로 한다.
+@app.post("/train/{gate_type}")
+def train(gate_type: str):
+    gate_type = gate_type.upper()
+    if gate_type not in gate_models:
+        return {"error": "지원하지 않는 gate_type입니다. AND, OR, NOT 중 선택해주세요."}
+    gate_models[gate_type].train()
+    return {"result": f"{gate_type}" 게이트 학습 완료!"}
 
 # endpoint 엔드포인트를 선언하며 GET으로 요청을 받고 경로는 /이다.
 @app.get("/")
@@ -27,13 +33,6 @@ def read_root():
 @app.get("/items/{item_id}") 
 def read_item(item_id: int):
     return {"item_id": item_id}
-
-# 모델의 학습을 요청한다. 생성 기능은 POST로 한다.
-@app.post("/train/{gate_type}")
-def train(gate_type: str):
-    gate_type = gate_type.upper()
-    if gate_type not in gate_models:
-        return {"error": "지원하지 않는 gate_type입니다. AND, OR, NOT 중 선택해주세요."}
 
 # 모델의 예측 기능을 호출한다. 조회 기능은 GET로 한다.
 @app.get("/predict/{gate_type}/{left}/{right}") 
